@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Roadmap — Master Every Language</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #1e1e2e;
+    --text: #e8e8f0;
+    --muted: #6b6b8a;
+    --accent-cpp: #00d4ff;
+    --accent-java: #ff6b35;
+    --accent-py: #ffd93d;
+    --accent-js: #6bcb77;
+    --accent-go: #a78bfa;
+    --accent-rust: #fb923c;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; cursor: none; }
+  .cursor { position: fixed; width: 12px; height: 12px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: difference; }
+  .cursor-ring { position: fixed; width: 40px; height: 40px; border: 1.5px solid rgba(255,255,255,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: left 0.12s ease-out, top 0.12s ease-out; }
+  body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:1000; opacity:0.35; }
+  .grid-bg { position:fixed; inset:0; background-image: linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px); background-size:60px 60px; animation:gridDrift 20s linear infinite; z-index:0; }
+  @keyframes gridDrift { 0%{transform:translate(0,0)} 100%{transform:translate(60px,60px)} }
+  .orb { position:fixed; border-radius:50%; filter:blur(80px); opacity:0.12; pointer-events:none; z-index:0; animation:orbFloat linear infinite; }
+  .orb1 { width:600px; height:600px; background:#00d4ff; top:-200px; left:-200px; animation-duration:25s; }
+  .orb2 { width:500px; height:500px; background:#ff6b35; bottom:-150px; right:-150px; animation-duration:30s; animation-delay:-10s; }
+  .orb3 { width:400px; height:400px; background:#a78bfa; top:40%; left:60%; animation-duration:20s; animation-delay:-5s; }
+  @keyframes orbFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-40px) scale(1.05)} 66%{transform:translate(-20px,30px) scale(0.95)} }
+  .wrapper { position:relative; z-index:1; }
+  .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:2rem; position:relative; }
+  .hero-badge { display:inline-flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:100px; padding:0.4rem 1rem; font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); margin-bottom:2rem; animation:fadeDown 0.8s ease both; }
+  .hero-badge span { width:6px; height:6px; background:#6bcb77; border-radius:50%; display:inline-block; animation:blink 2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero h1 { font-size:clamp(3rem,8vw,7rem); font-weight:800; line-height:0.95; letter-spacing:-0.03em; animation:fadeUp 1s ease both 0.2s; }
+  .hero h1 .line1 { display:block; }
+  .hero h1 .line2 { display:block; background:linear-gradient(135deg,#00d4ff 0%,#a78bfa 50%,#ff6b35 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; background-size:200%; animation:fadeUp 1s ease both 0.3s, gradShift 4s linear infinite; }
+  @keyframes gradShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  .hero-sub { margin-top:1.5rem; font-size:1.1rem; color:var(--muted); max-width:500px; line-height:1.6; animation:fadeUp 1s ease both 0.5s; }
+  .hero-scroll { position:absolute; bottom:2rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem; animation:fadeUp 1s ease both 1s; color:var(--muted); font-family:'Space Mono',monospace; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; }
+  .scroll-line { width:1px; height:50px; background:linear-gradient(to bottom,var(--muted),transparent); animation:scrollP 2s ease-in-out infinite; }
+  @keyframes scrollP { 0%,100%{transform:scaleY(1);opacity:1} 50%{transform:scaleY(0.5);opacity:0.4} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+  .section { padding:5rem 2rem; max-width:1300px; margin:0 auto; }
+  .section-label { font-family:'Space Mono',monospace; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:1rem; }
+  .section-title { font-size:clamp(2rem,4vw,3.5rem); font-weight:800; letter-spacing:-0.02em; margin-bottom:3rem; }
+  .lang-tabs { display:flex; flex-wrap:wrap; gap:0.75rem; margin-bottom:3rem; }
+  .lang-tab { display:flex; align-items:center; gap:0.6rem; padding:0.65rem 1.25rem; background:var(--surface); border:1px solid var(--border); border-radius:10px; cursor:pointer; font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:600; color:var(--muted); transition:all 0.25s ease; }
+  .lang-tab:hover { color:var(--text); border-color:rgba(255,255,255,0.15); transform:translateY(-2px); }
+  .lang-tab .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .lang-tab[data-lang="cpp"] .dot { background:var(--accent-cpp); }
+  .lang-tab[data-lang="java"] .dot { background:var(--accent-java); }
+  .lang-tab[data-lang="python"] .dot { background:var(--accent-py); }
+  .lang-tab[data-lang="js"] .dot { background:var(--accent-js); }
+  .lang-tab[data-lang="go"] .dot { background:var(--accent-go); }
+  .lang-tab[data-lang="rust"] .dot { background:var(--accent-rust); }
+  .lang-tab[data-lang="cpp"].active { border-color:var(--accent-cpp); background:rgba(0,212,255,0.08); color:var(--accent-cpp); box-shadow:0 0 20px rgba(0,212,255,0.15); }
+  .lang-tab[data-lang="java"].active { border-color:var(--accent-java); background:rgba(255,107,53,0.08); color:var(--accent-java); box-shadow:0 0 20px rgba(255,107,53,0.15); }
+  .lang-tab[data-lang="python"].active { border-color:var(--accent-py); background:rgba(255,217,61,0.08); color:var(--accent-py); box-shadow:0 0 20px rgba(255,217,61,0.15); }
+  .lang-tab[data-lang="js"].active { border-color:var(--accent-js); background:rgba(107,203,119,0.08); color:var(--accent-js); box-shadow:0 0 20px rgba(107,203,119,0.15); }
+  .lang-tab[data-lang="go"].active { border-color:var(--accent-go); background:rgba(167,139,250,0.08); color:var(--accent-go); box-shadow:0 0 20px rgba(167,139,250,0.15); }
+  .lang-tab[data-lang="rust"].active { border-color:var(--accent-rust); background:rgba(251,146,60,0.08); color:var(--accent-rust); box-shadow:0 0 20px rgba(251,146,60,0.15); }
+  .roadmap-pane { display:none; animation:paneIn 0.4s ease; }
+  .roadmap-pane.active { display:block; }
+  @keyframes paneIn { from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)} }
+  .phase { margin-bottom:2.5rem; }
+  .phase-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.25rem; }
+  .phase-number { font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); border:1px solid var(--border); border-radius:100px; padding:0.2rem 0.65rem; flex-shrink:0; }
+  .phase-title { font-size:1.15rem; font-weight:700; letter-spacing:-0.01em; }
+  .phase-line { flex:1; height:1px; background:var(--border); }
+  .topics-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem; }
+  .topic-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.25rem; text-decoration:none; color:var(--text); display:flex; flex-direction:column; gap:0.5rem; transition:all 0.25s ease; position:relative; overflow:hidden; cursor:pointer; }
+  .topic-card:hover { transform:translateY(-4px); border-color:rgba(255,255,255,0.15); }
+  .topic-icon { font-size:1.4rem; }
+  .topic-name { font-size:0.95rem; font-weight:700; line-height:1.3; }
+  .topic-desc { font-size:0.78rem; color:var(--muted); line-height:1.5; }
+  .topic-arrow { margin-top:auto; display:flex; align-items:center; gap:0.3rem; font-family:'Space Mono',monospace; font-size:0.65rem; opacity:0.5; transition:opacity 0.2s, gap 0.2s; }
+  .topic-card:hover .topic-arrow { opacity:1; gap:0.5rem; }
+  [data-lang="cpp"] .topic-card:hover { box-shadow:0 8px 30px rgba(0,212,255,0.1); border-color:rgba(0,212,255,0.3); }
+  [data-lang="java"] .topic-card:hover { box-shadow:0 8px 30px rgba(255,107,53,0.1); border-color:rgba(255,107,53,0.3); }
+  [data-lang="python"] .topic-card:hover { box-shadow:0 8px 30px rgba(255,217,61,0.1); border-color:rgba(255,217,61,0.3); }
+  [data-lang="js"] .topic-card:hover { box-shadow:0 8px 30px rgba(107,203,119,0.1); border-color:rgba(107,203,119,0.3); }
+  [data-lang="go"] .topic-card:hover { box-shadow:0 8px 30px rgba(167,139,250,0.1); border-color:rgba(167,139,250,0.3); }
+  [data-lang="rust"] .topic-card:hover { box-shadow:0 8px 30px rgba(251,146,60,0.1); border-color:rgba(251,146,60,0.3); }
+  .lang-progress { display:flex; align-items:center; gap:1rem; margin-bottom:2.5rem; padding:1rem 1.25rem; background:var(--surface); border:1px solid var(--border); border-radius:12px; }
+  .lang-progress-label { font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); white-space:nowrap; }
+  .progress-bar-wrap { flex:1; height:4px; background:var(--border); border-radius:100px; overflow:hidden; }
+  .progress-bar-fill { height:100%; border-radius:100px; transition:width 1s cubic-bezier(0.4,0,0.2,1); width:0%; }
+  .lang-progress-topics { font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); white-space:nowrap; }
+  .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; margin-bottom:5rem; }
+  .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.5rem; text-align:center; transition:transform 0.2s; }
+  .stat-card:hover { transform:translateY(-3px); }
+  .stat-num { font-size:2.5rem; font-weight:800; letter-spacing:-0.04em; line-height:1; }
+  .stat-label { font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-top:0.4rem; }
+  footer { border-top:1px solid var(--border); padding:3rem 2rem; text-align:center; font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); }
+  .reveal { opacity:0; transform:translateY(25px); transition:opacity 0.6s ease,transform 0.6s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  @media (max-width:640px) { .topics-grid{grid-template-columns:1fr} .lang-tabs{gap:0.5rem} .lang-tab{font-size:0.8rem;padding:0.5rem 0.9rem} }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="wrapper">
+  <section class="hero">
+    <div class="hero-badge"><span></span> Your complete DSA learning path</div>
+    <h1>
+      <span class="line1">Master</span>
+      <span class="line2">Data Structures</span>
+      <span class="line1">&amp; Algorithms</span>
+    </h1>
+    <p class="hero-sub">Curated roadmaps for C++, Java, Python, JavaScript, Go &amp; Rust — with hand-picked resources for every topic.</p>
+    <div class="hero-scroll"><span>Explore</span><div class="scroll-line"></div></div>
+  </section>
+
+  <div class="section">
+    <div class="stats-row reveal">
+      <div class="stat-card"><div class="stat-num" style="color:#00d4ff">6</div><div class="stat-label">Languages</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:#ffd93d">50+</div><div class="stat-label">Topics</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:#a78bfa">100+</div><div class="stat-label">Resources</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:#6bcb77">5</div><div class="stat-label">Phases / Lang</div></div>
+    </div>
+
+    <div class="section-label reveal">Choose your language</div>
+    <h2 class="section-title reveal">Pick a Path</h2>
+
+    <div class="lang-tabs reveal">
+      <button class="lang-tab active" data-lang="cpp" onclick="switchLang('cpp')"><span class="dot"></span> C++</button>
+      <button class="lang-tab" data-lang="java" onclick="switchLang('java')"><span class="dot"></span> Java</button>
+      <button class="lang-tab" data-lang="python" onclick="switchLang('python')"><span class="dot"></span> Python</button>
+      <button class="lang-tab" data-lang="js" onclick="switchLang('js')"><span class="dot"></span> JavaScript</button>
+      <button class="lang-tab" data-lang="go" onclick="switchLang('go')"><span class="dot"></span> Go</button>
+      <button class="lang-tab" data-lang="rust" onclick="switchLang('rust')"><span class="dot"></span> Rust</button>
+    </div>
+
+    <!-- C++ -->
+    <div class="roadmap-pane active" id="pane-cpp" data-lang="cpp">
+      <div class="lang-progress">
+        <span class="lang-progress-label">ROADMAP COVERAGE</span>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="background:var(--accent-cpp)" data-target="100"></div></div>
+        <span class="lang-progress-topics">15 topics</span>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">01</span><span class="phase-title">Foundations</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.learncpp.com/" target="_blank"><span class="topic-icon">🧱</span><span class="topic-name">C++ Basics &amp; STL</span><span class="topic-desc">Variables, pointers, references, vectors, maps, sets &amp; iterators.</span><span class="topic-arrow">learncpp.com →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/c-plus-plus/" target="_blank"><span class="topic-icon">📚</span><span class="topic-name">OOP in C++</span><span class="topic-desc">Classes, inheritance, polymorphism &amp; templates.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://visualgo.net/en/array" target="_blank"><span class="topic-icon">🔢</span><span class="topic-name">Arrays &amp; Strings</span><span class="topic-desc">Sliding window, two pointers, prefix sum &amp; in-place techniques.</span><span class="topic-arrow">visualgo.net →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">02</span><span class="phase-title">Core Data Structures</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/linked-list-data-structure/" target="_blank"><span class="topic-icon">🔗</span><span class="topic-name">Linked Lists</span><span class="topic-desc">Singly, doubly &amp; circular lists; reversal, cycle detection.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/stack-data-structure/" target="_blank"><span class="topic-icon">📦</span><span class="topic-name">Stacks &amp; Queues</span><span class="topic-desc">Monotonic stacks, deques, priority queues &amp; applications.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://visualgo.net/en/hashtable" target="_blank"><span class="topic-icon">🗂️</span><span class="topic-name">Hashing</span><span class="topic-desc">Hash maps, collision resolution &amp; open addressing.</span><span class="topic-arrow">visualgo.net →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">03</span><span class="phase-title">Trees &amp; Graphs</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/binary-tree-data-structure/" target="_blank"><span class="topic-icon">🌲</span><span class="topic-name">Binary Trees &amp; BST</span><span class="topic-desc">Traversals, height, LCA &amp; balanced BST operations.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://cp-algorithms.com/graph/breadth-first-search.html" target="_blank"><span class="topic-icon">🕸️</span><span class="topic-name">BFS &amp; DFS</span><span class="topic-desc">Graph traversals, connected components &amp; topological sort.</span><span class="topic-arrow">cp-algorithms.com →</span></a>
+          <a class="topic-card" href="https://cp-algorithms.com/graph/dijkstra.html" target="_blank"><span class="topic-icon">🗺️</span><span class="topic-name">Shortest Paths</span><span class="topic-desc">Dijkstra, Bellman-Ford, Floyd-Warshall algorithms.</span><span class="topic-arrow">cp-algorithms.com →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">04</span><span class="phase-title">Algorithms</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://visualgo.net/en/sorting" target="_blank"><span class="topic-icon">🔀</span><span class="topic-name">Sorting Algorithms</span><span class="topic-desc">Merge sort, quick sort, heap sort &amp; counting sort.</span><span class="topic-arrow">visualgo.net →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/dynamic-programming/" target="_blank"><span class="topic-icon">⚡</span><span class="topic-name">Dynamic Programming</span><span class="topic-desc">Memoization, tabulation, knapsack, LCS &amp; DP on trees.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://cp-algorithms.com/" target="_blank"><span class="topic-icon">🏆</span><span class="topic-name">Advanced Topics</span><span class="topic-desc">Segment trees, Fenwick trees, Trie &amp; Union-Find.</span><span class="topic-arrow">cp-algorithms.com →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">05</span><span class="phase-title">Practice Platforms</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://leetcode.com/problemset/" target="_blank"><span class="topic-icon">💻</span><span class="topic-name">LeetCode</span><span class="topic-desc">3000+ problems with C++ solutions &amp; contest problems.</span><span class="topic-arrow">leetcode.com →</span></a>
+          <a class="topic-card" href="https://codeforces.com/" target="_blank"><span class="topic-icon">🥇</span><span class="topic-name">Codeforces</span><span class="topic-desc">Competitive programming with rated contests.</span><span class="topic-arrow">codeforces.com →</span></a>
+          <a class="topic-card" href="https://www.hackerrank.com/domains/data-structures" target="_blank"><span class="topic-icon">⭐</span><span class="topic-name">HackerRank DSA</span><span class="topic-desc">Structured challenges on all data structure topics.</span><span class="topic-arrow">hackerrank.com →</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- JAVA -->
+    <div class="roadmap-pane" id="pane-java" data-lang="java">
+      <div class="lang-progress">
+        <span class="lang-progress-label">ROADMAP COVERAGE</span>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="background:var(--accent-java)" data-target="100"></div></div>
+        <span class="lang-progress-topics">15 topics</span>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">01</span><span class="phase-title">Java Foundations</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://docs.oracle.com/javase/tutorial/" target="_blank"><span class="topic-icon">☕</span><span class="topic-name">Java Core &amp; Collections</span><span class="topic-desc">ArrayList, HashMap, LinkedList, TreeMap from java.util.</span><span class="topic-arrow">oracle.com →</span></a>
+          <a class="topic-card" href="https://www.baeldung.com/java-generics" target="_blank"><span class="topic-icon">🧩</span><span class="topic-name">Generics &amp; OOP</span><span class="topic-desc">Interfaces, abstract classes, generics and SOLID principles.</span><span class="topic-arrow">baeldung.com →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/arrays-in-java/" target="_blank"><span class="topic-icon">📐</span><span class="topic-name">Arrays &amp; Complexity</span><span class="topic-desc">Array manipulation, Big-O analysis &amp; space-time tradeoffs.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">02</span><span class="phase-title">Linear Structures</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/linked-list-in-java/" target="_blank"><span class="topic-icon">🔗</span><span class="topic-name">Linked Lists in Java</span><span class="topic-desc">LinkedList class internals, custom implementations.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/stack-class-in-java/" target="_blank"><span class="topic-icon">📚</span><span class="topic-name">Stack, Queue &amp; Deque</span><span class="topic-desc">Java Stack, ArrayDeque, PriorityQueue implementations.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/hashing-in-java/" target="_blank"><span class="topic-icon">🔑</span><span class="topic-name">Hashing in Java</span><span class="topic-desc">HashMap, HashSet, equals/hashCode contracts.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">03</span><span class="phase-title">Trees &amp; Graphs</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/binary-tree-set-1-introduction/" target="_blank"><span class="topic-icon">🌳</span><span class="topic-name">Binary Trees</span><span class="topic-desc">BFS, DFS traversals, Morris traversal, segment trees.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://takeuforward.org/graph/striver-graph-series-top-graph-interview-questions/" target="_blank"><span class="topic-icon">🕸️</span><span class="topic-name">Graph Algorithms</span><span class="topic-desc">Striver's complete graph series — BFS, DFS, Dijkstra, DSU.</span><span class="topic-arrow">takeuforward.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/heap-data-structure/" target="_blank"><span class="topic-icon">⛰️</span><span class="topic-name">Heaps &amp; Priority Queues</span><span class="topic-desc">Min-heap, max-heap, heap sort, K-way merge.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">04</span><span class="phase-title">Algorithms</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://takeuforward.org/dynamic-programming/striver-dp-series-dynamic-programming-problems/" target="_blank"><span class="topic-icon">⚡</span><span class="topic-name">Dynamic Programming</span><span class="topic-desc">Striver's DP series — all patterns with Java solutions.</span><span class="topic-arrow">takeuforward.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/backtracking-algorithms/" target="_blank"><span class="topic-icon">🔄</span><span class="topic-name">Backtracking</span><span class="topic-desc">N-Queens, Sudoku solver, permutations &amp; subsets.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/greedy-algorithms/" target="_blank"><span class="topic-icon">🎯</span><span class="topic-name">Greedy Algorithms</span><span class="topic-desc">Activity selection, Huffman encoding, interval scheduling.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">05</span><span class="phase-title">Practice</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://leetcode.com/problemset/" target="_blank"><span class="topic-icon">💻</span><span class="topic-name">LeetCode</span><span class="topic-desc">Filter by Java, use NeetCode roadmap to structure practice.</span><span class="topic-arrow">leetcode.com →</span></a>
+          <a class="topic-card" href="https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/" target="_blank"><span class="topic-icon">📋</span><span class="topic-name">Striver's A2Z Sheet</span><span class="topic-desc">The most comprehensive Java DSA problem sheet.</span><span class="topic-arrow">takeuforward.org →</span></a>
+          <a class="topic-card" href="https://www.interviewbit.com/courses/programming/" target="_blank"><span class="topic-icon">🏢</span><span class="topic-name">InterviewBit</span><span class="topic-desc">Interview-focused problems for FAANG preparation.</span><span class="topic-arrow">interviewbit.com →</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PYTHON -->
+    <div class="roadmap-pane" id="pane-python" data-lang="python">
+      <div class="lang-progress">
+        <span class="lang-progress-label">ROADMAP COVERAGE</span>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="background:var(--accent-py)" data-target="100"></div></div>
+        <span class="lang-progress-topics">15 topics</span>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">01</span><span class="phase-title">Python Foundations</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://docs.python.org/3/tutorial/" target="_blank"><span class="topic-icon">🐍</span><span class="topic-name">Python Syntax &amp; Builtins</span><span class="topic-desc">Lists, dicts, sets, comprehensions, generators &amp; decorators.</span><span class="topic-arrow">python.org →</span></a>
+          <a class="topic-card" href="https://realpython.com/python-collections-module/" target="_blank"><span class="topic-icon">📦</span><span class="topic-name">Collections Module</span><span class="topic-desc">deque, Counter, defaultdict, OrderedDict for DSA.</span><span class="topic-arrow">realpython.com →</span></a>
+          <a class="topic-card" href="https://wiki.python.org/moin/TimeComplexity" target="_blank"><span class="topic-icon">⏱️</span><span class="topic-name">Python Time Complexity</span><span class="topic-desc">Built-in operation complexities: list, dict, set.</span><span class="topic-arrow">python.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">02</span><span class="phase-title">Core Structures</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/python-linked-list/" target="_blank"><span class="topic-icon">🔗</span><span class="topic-name">Linked Lists</span><span class="topic-desc">Node classes, singly/doubly lists, slow-fast pointers.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://neetcode.io/roadmap" target="_blank"><span class="topic-icon">🗺️</span><span class="topic-name">NeetCode Roadmap</span><span class="topic-desc">Python-focused DSA roadmap with video explanations.</span><span class="topic-arrow">neetcode.io →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/heap-queue-or-heapq-in-python/" target="_blank"><span class="topic-icon">⛰️</span><span class="topic-name">heapq Module</span><span class="topic-desc">Min-heaps, max-heaps, nlargest/nsmallest tricks.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">03</span><span class="phase-title">Trees &amp; Graphs</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/binary-tree-data-structure/" target="_blank"><span class="topic-icon">🌲</span><span class="topic-name">Trees in Python</span><span class="topic-desc">TreeNode class, recursive DFS &amp; iterative BFS with deque.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/" target="_blank"><span class="topic-icon">🕸️</span><span class="topic-name">Graphs with adjacency dict</span><span class="topic-desc">BFS, DFS, Union-Find using Python dictionaries.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://realpython.com/python-recursion/" target="_blank"><span class="topic-icon">🔄</span><span class="topic-name">Recursion &amp; Backtracking</span><span class="topic-desc">Subsets, permutations, N-Queens, memoization with @cache.</span><span class="topic-arrow">realpython.com →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">04</span><span class="phase-title">Algorithms</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/dynamic-programming/" target="_blank"><span class="topic-icon">⚡</span><span class="topic-name">Dynamic Programming</span><span class="topic-desc">Python @lru_cache, functools, 1D/2D DP patterns.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://visualgo.net/en/sorting" target="_blank"><span class="topic-icon">🔀</span><span class="topic-name">Sorting &amp; Searching</span><span class="topic-desc">bisect module, custom key sorting, merge sort.</span><span class="topic-arrow">visualgo.net →</span></a>
+          <a class="topic-card" href="https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz" target="_blank"><span class="topic-icon">📺</span><span class="topic-name">Striver's YouTube</span><span class="topic-desc">Complete DSA in Python video playlist by Striver.</span><span class="topic-arrow">youtube.com →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">05</span><span class="phase-title">Practice</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://neetcode.io/practice" target="_blank"><span class="topic-icon">🎯</span><span class="topic-name">NeetCode 150</span><span class="topic-desc">Top 150 LeetCode problems with Python video solutions.</span><span class="topic-arrow">neetcode.io →</span></a>
+          <a class="topic-card" href="https://leetcode.com/problemset/" target="_blank"><span class="topic-icon">💻</span><span class="topic-name">LeetCode Python</span><span class="topic-desc">Practice with Python's concise syntax advantage.</span><span class="topic-arrow">leetcode.com →</span></a>
+          <a class="topic-card" href="https://www.codewars.com/" target="_blank"><span class="topic-icon">⚔️</span><span class="topic-name">Codewars</span><span class="topic-desc">Kata-based Python challenges from beginner to expert.</span><span class="topic-arrow">codewars.com →</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <div class="roadmap-pane" id="pane-js" data-lang="js">
+      <div class="lang-progress">
+        <span class="lang-progress-label">ROADMAP COVERAGE</span>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="background:var(--accent-js)" data-target="100"></div></div>
+        <span class="lang-progress-topics">15 topics</span>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">01</span><span class="phase-title">JS Foundations</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://javascript.info/" target="_blank"><span class="topic-icon">🟨</span><span class="topic-name">Modern JavaScript</span><span class="topic-desc">ES6+, destructuring, closures, prototypes &amp; Map/Set.</span><span class="topic-arrow">javascript.info →</span></a>
+          <a class="topic-card" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank"><span class="topic-icon">📝</span><span class="topic-name">Array Methods</span><span class="topic-desc">map, filter, reduce, sort — complexity &amp; usage in DSA.</span><span class="topic-arrow">mdn web docs →</span></a>
+          <a class="topic-card" href="https://www.bigocheatsheet.com/" target="_blank"><span class="topic-icon">📊</span><span class="topic-name">Big-O Complexity</span><span class="topic-desc">JS data structure operations and their complexities.</span><span class="topic-arrow">bigocheatsheet.com →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">02</span><span class="phase-title">Core DSA</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/linked-list-set-1-introduction/" target="_blank"><span class="topic-icon">🔗</span><span class="topic-name">Linked Lists in JS</span><span class="topic-desc">Building linked list classes using JS objects &amp; references.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/implementation-stack-javascript/" target="_blank"><span class="topic-icon">📦</span><span class="topic-name">Stack &amp; Queue</span><span class="topic-desc">Implementing stack/queue with arrays &amp; linked lists in JS.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://visualgo.net/en/bst" target="_blank"><span class="topic-icon">🌲</span><span class="topic-name">Binary Search Trees</span><span class="topic-desc">Insert, delete, search &amp; traversals visualized.</span><span class="topic-arrow">visualgo.net →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">03</span><span class="phase-title">Algorithms in JS</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/" target="_blank"><span class="topic-icon">🕸️</span><span class="topic-name">Graph Algorithms</span><span class="topic-desc">BFS/DFS using adjacency lists, Dijkstra with Min-Heap.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/dynamic-programming/" target="_blank"><span class="topic-icon">⚡</span><span class="topic-name">Dynamic Programming</span><span class="topic-desc">Memoization with Map, tabulation patterns in JavaScript.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/sorting-algorithms/" target="_blank"><span class="topic-icon">🔀</span><span class="topic-name">Sorting Algorithms</span><span class="topic-desc">Merge sort, quick sort &amp; custom comparators in JS.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">04</span><span class="phase-title">Advanced</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/trie-insert-and-search/" target="_blank"><span class="topic-icon">🌐</span><span class="topic-name">Trie</span><span class="topic-desc">Prefix tree with JS objects for autocomplete &amp; word search.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range/" target="_blank"><span class="topic-icon">📏</span><span class="topic-name">Segment Trees</span><span class="topic-desc">Range queries and point updates with arrays in JS.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/union-find/" target="_blank"><span class="topic-icon">🔗</span><span class="topic-name">Union Find / DSU</span><span class="topic-desc">Disjoint Set Union with path compression in JS.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">05</span><span class="phase-title">Practice</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://neetcode.io/practice" target="_blank"><span class="topic-icon">🎯</span><span class="topic-name">NeetCode</span><span class="topic-desc">JavaScript solutions for all 150 top LeetCode problems.</span><span class="topic-arrow">neetcode.io →</span></a>
+          <a class="topic-card" href="https://leetcode.com/problemset/" target="_blank"><span class="topic-icon">💻</span><span class="topic-name">LeetCode</span><span class="topic-desc">Filter by JavaScript for language-specific practice.</span><span class="topic-arrow">leetcode.com →</span></a>
+          <a class="topic-card" href="https://frontendmasters.com/courses/algorithms/" target="_blank"><span class="topic-icon">📺</span><span class="topic-name">FEM Algorithms Course</span><span class="topic-desc">ThePrimeagen's complete algorithms course in TypeScript/JS.</span><span class="topic-arrow">frontendmasters.com →</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- GO -->
+    <div class="roadmap-pane" id="pane-go" data-lang="go">
+      <div class="lang-progress">
+        <span class="lang-progress-label">ROADMAP COVERAGE</span>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="background:var(--accent-go)" data-target="100"></div></div>
+        <span class="lang-progress-topics">15 topics</span>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">01</span><span class="phase-title">Go Foundations</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://go.dev/tour/welcome/1" target="_blank"><span class="topic-icon">🐹</span><span class="topic-name">Go Tour</span><span class="topic-desc">Official Go tour — goroutines, slices, maps &amp; interfaces.</span><span class="topic-arrow">go.dev →</span></a>
+          <a class="topic-card" href="https://gobyexample.com/" target="_blank"><span class="topic-icon">📖</span><span class="topic-name">Go by Example</span><span class="topic-desc">Practical examples: slices, maps, closures &amp; recursion.</span><span class="topic-arrow">gobyexample.com →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/golang/" target="_blank"><span class="topic-icon">🧩</span><span class="topic-name">Structs &amp; Interfaces</span><span class="topic-desc">Embedding, interfaces and Go's composition pattern.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">02</span><span class="phase-title">Data Structures</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/linked-list-set-1-introduction/" target="_blank"><span class="topic-icon">🔗</span><span class="topic-name">Linked Lists in Go</span><span class="topic-desc">Implementing linked lists using Go structs and pointers.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://pkg.go.dev/container/heap" target="_blank"><span class="topic-icon">⛰️</span><span class="topic-name">container/heap</span><span class="topic-desc">Go's container/heap package for priority queues.</span><span class="topic-arrow">pkg.go.dev →</span></a>
+          <a class="topic-card" href="https://pkg.go.dev/container/list" target="_blank"><span class="topic-icon">📦</span><span class="topic-name">container/list &amp; ring</span><span class="topic-desc">Go standard library doubly-linked list and circular ring.</span><span class="topic-arrow">pkg.go.dev →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">03</span><span class="phase-title">Trees &amp; Graphs</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/binary-tree-data-structure/" target="_blank"><span class="topic-icon">🌲</span><span class="topic-name">Binary Trees</span><span class="topic-desc">Recursive DFS, iterative BFS using Go slices as queues.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://cp-algorithms.com/graph/breadth-first-search.html" target="_blank"><span class="topic-icon">🕸️</span><span class="topic-name">Graph Algorithms</span><span class="topic-desc">BFS/DFS, shortest paths &amp; minimum spanning trees.</span><span class="topic-arrow">cp-algorithms.com →</span></a>
+          <a class="topic-card" href="https://visualgo.net/en/dfsbfs" target="_blank"><span class="topic-icon">👁️</span><span class="topic-name">Graph Visualizer</span><span class="topic-desc">Visual step-by-step BFS and DFS traversals.</span><span class="topic-arrow">visualgo.net →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">04</span><span class="phase-title">Algorithms</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/dynamic-programming/" target="_blank"><span class="topic-icon">⚡</span><span class="topic-name">Dynamic Programming</span><span class="topic-desc">DP patterns implemented idiomatically in Go.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/sorting-algorithms/" target="_blank"><span class="topic-icon">🔀</span><span class="topic-name">Sorting &amp; sort.Slice</span><span class="topic-desc">Go's sort package, custom comparators &amp; stable sort.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/backtracking-algorithms/" target="_blank"><span class="topic-icon">🔄</span><span class="topic-name">Backtracking</span><span class="topic-desc">Recursive backtracking patterns in Go.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">05</span><span class="phase-title">Practice</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://leetcode.com/problemset/" target="_blank"><span class="topic-icon">💻</span><span class="topic-name">LeetCode in Go</span><span class="topic-desc">Filter by Go language for focused practice.</span><span class="topic-arrow">leetcode.com →</span></a>
+          <a class="topic-card" href="https://exercism.org/tracks/go" target="_blank"><span class="topic-icon">🏋️</span><span class="topic-name">Exercism Go Track</span><span class="topic-desc">Mentor-reviewed Go exercises from beginner to advanced.</span><span class="topic-arrow">exercism.org →</span></a>
+          <a class="topic-card" href="https://codeforces.com/" target="_blank"><span class="topic-icon">🥇</span><span class="topic-name">Codeforces</span><span class="topic-desc">Competitive programming with Go support.</span><span class="topic-arrow">codeforces.com →</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RUST -->
+    <div class="roadmap-pane" id="pane-rust" data-lang="rust">
+      <div class="lang-progress">
+        <span class="lang-progress-label">ROADMAP COVERAGE</span>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="background:var(--accent-rust)" data-target="100"></div></div>
+        <span class="lang-progress-topics">15 topics</span>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">01</span><span class="phase-title">Rust Foundations</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://doc.rust-lang.org/book/" target="_blank"><span class="topic-icon">🦀</span><span class="topic-name">The Rust Book</span><span class="topic-desc">Ownership, borrowing, lifetimes — essential before DSA.</span><span class="topic-arrow">rust-lang.org →</span></a>
+          <a class="topic-card" href="https://doc.rust-lang.org/std/collections/" target="_blank"><span class="topic-icon">📚</span><span class="topic-name">std::collections</span><span class="topic-desc">HashMap, BTreeMap, BinaryHeap, VecDeque for DSA.</span><span class="topic-arrow">rust-lang.org →</span></a>
+          <a class="topic-card" href="https://rustlings.cool/" target="_blank"><span class="topic-icon">🏋️</span><span class="topic-name">Rustlings</span><span class="topic-desc">Small exercises to learn Rust syntax and concepts.</span><span class="topic-arrow">rustlings.cool →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">02</span><span class="phase-title">Data Structures</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/rust-program-to-implement-linked-list/" target="_blank"><span class="topic-icon">🔗</span><span class="topic-name">Linked Lists in Rust</span><span class="topic-desc">The infamous "too many linked lists" — using Box and Rc.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://doc.rust-lang.org/std/collections/struct.BinaryHeap.html" target="_blank"><span class="topic-icon">⛰️</span><span class="topic-name">BinaryHeap</span><span class="topic-desc">Priority queues with Rust's BinaryHeap (max-heap by default).</span><span class="topic-arrow">rust-lang.org →</span></a>
+          <a class="topic-card" href="https://doc.rust-lang.org/std/collections/struct.HashMap.html" target="_blank"><span class="topic-icon">🗂️</span><span class="topic-name">HashMap &amp; BTreeMap</span><span class="topic-desc">Hash maps for O(1) and BTree for ordered O(log n) access.</span><span class="topic-arrow">rust-lang.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">03</span><span class="phase-title">Algorithms</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/sorting-algorithms/" target="_blank"><span class="topic-icon">🔀</span><span class="topic-name">Sorting in Rust</span><span class="topic-desc">slice.sort(), sort_by() with closures, Ord &amp; PartialOrd.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://cp-algorithms.com/" target="_blank"><span class="topic-icon">🏆</span><span class="topic-name">Competitive Algorithms</span><span class="topic-desc">CP-algorithms implemented in idiomatic Rust.</span><span class="topic-arrow">cp-algorithms.com →</span></a>
+          <a class="topic-card" href="https://www.geeksforgeeks.org/dynamic-programming/" target="_blank"><span class="topic-icon">⚡</span><span class="topic-name">Dynamic Programming</span><span class="topic-desc">DP with Rust's Vec&lt;Vec&lt;i64&gt;&gt; tabulation patterns.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">04</span><span class="phase-title">Trees &amp; Graphs</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://www.geeksforgeeks.org/binary-tree-data-structure/" target="_blank"><span class="topic-icon">🌲</span><span class="topic-name">Trees with Box/Rc</span><span class="topic-desc">Binary trees using Box&lt;Node&gt; and Option&lt;Box&lt;Node&gt;&gt;.</span><span class="topic-arrow">geeksforgeeks.org →</span></a>
+          <a class="topic-card" href="https://cp-algorithms.com/graph/breadth-first-search.html" target="_blank"><span class="topic-icon">🕸️</span><span class="topic-name">Graph Algorithms</span><span class="topic-desc">Adjacency list with Vec&lt;Vec&lt;usize&gt;&gt;, BFS with VecDeque.</span><span class="topic-arrow">cp-algorithms.com →</span></a>
+          <a class="topic-card" href="https://visualgo.net/en/dfsbfs" target="_blank"><span class="topic-icon">👁️</span><span class="topic-name">Visual Algorithms</span><span class="topic-desc">Visualize graph algorithms while coding in Rust.</span><span class="topic-arrow">visualgo.net →</span></a>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-header"><span class="phase-number">05</span><span class="phase-title">Practice</span><div class="phase-line"></div></div>
+        <div class="topics-grid">
+          <a class="topic-card" href="https://leetcode.com/problemset/" target="_blank"><span class="topic-icon">💻</span><span class="topic-name">LeetCode in Rust</span><span class="topic-desc">Growing Rust support — great for ownership-heavy problems.</span><span class="topic-arrow">leetcode.com →</span></a>
+          <a class="topic-card" href="https://exercism.org/tracks/rust" target="_blank"><span class="topic-icon">🏋️</span><span class="topic-name">Exercism Rust Track</span><span class="topic-desc">Expert-mentored Rust exercises with community feedback.</span><span class="topic-arrow">exercism.org →</span></a>
+          <a class="topic-card" href="https://codeforces.com/" target="_blank"><span class="topic-icon">🥇</span><span class="topic-name">Codeforces</span><span class="topic-desc">Submit in Rust for competitive programming contests.</span><span class="topic-arrow">codeforces.com →</span></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span style="color:var(--text)">DSA Roadmap</span> — built for learners &nbsp;·&nbsp; All resources link to their original authors &nbsp;·&nbsp; Happy coding 🚀
+  </footer>
+</div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  });
+
+  // Lang switcher
+  function switchLang(lang) {
+    document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.roadmap-pane').forEach(p => p.classList.remove('active'));
+    document.querySelector('.lang-tab[data-lang="' + lang + '"]').classList.add('active');
+    const pane = document.getElementById('pane-' + lang);
+    pane.classList.add('active');
+    setTimeout(() => {
+      const fill = pane.querySelector('.progress-bar-fill');
+      fill.style.width = fill.dataset.target + '%';
+    }, 100);
+    staggerCards(pane);
+  }
+
+  function staggerCards(pane) {
+    const cards = pane.querySelectorAll('.topic-card');
+    cards.forEach((card, i) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.35s ease, transform 0.35s ease, box-shadow 0.25s, border-color 0.25s';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, i * 45);
+    });
+  }
+
+  // Init
+  setTimeout(() => {
+    const fill = document.querySelector('.roadmap-pane.active .progress-bar-fill');
+    if (fill) fill.style.width = fill.dataset.target + '%';
+    staggerCards(document.querySelector('.roadmap-pane.active'));
+  }, 600);
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
